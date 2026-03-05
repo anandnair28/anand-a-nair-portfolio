@@ -215,6 +215,31 @@ a {
   gap: 0.6rem;
 }
 
+.mobile-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 14px;
+  color: #32384a;
+  padding: 0.78rem 1.02rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: 170ms ease;
+}
+
+[data-theme="dark"] .mobile-menu-toggle {
+  color: #d2dcf4;
+  background: #1a2338d9;
+}
+
+.mobile-menu-backdrop {
+  display: none;
+}
+
 .tab-button {
   border: 1px solid var(--line);
   background: var(--panel);
@@ -584,8 +609,66 @@ a {
     padding-top: 0.3rem;
   }
 
+  .mobile-menu-toggle {
+    display: inline-flex;
+    width: auto;
+    min-width: 116px;
+  }
+
+  .tab-zone {
+    top: 3.9rem;
+    position: sticky;
+    z-index: 30;
+  }
+
+  .mobile-menu-backdrop {
+    display: block;
+    position: fixed;
+    inset: 4rem 0 0 0;
+    border: 0;
+    padding: 0;
+    background: #0e162829;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 170ms ease;
+    z-index: 28;
+  }
+
+  .mobile-menu-backdrop.mobile-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tab-row {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 4rem;
+    bottom: 0;
+    width: min(78vw, 290px);
+    margin-top: 0;
+    padding: 0.7rem 0.7rem 1rem;
+    border-right: 1px solid var(--line);
+    border-radius: 0 16px 16px 0;
+    background: var(--panel-strong);
+    box-shadow: 0 12px 28px #7a8db92b;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 29;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-100%);
+    transition: opacity 170ms ease, transform 170ms ease;
+  }
+
+  .tab-row.mobile-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
   .tab-button {
-    width: calc(50% - 0.3rem);
+    width: 100%;
   }
 
   .theme-toggle {
@@ -593,8 +676,8 @@ a {
     right: 0.55rem;
   }
 
-  .tab-zone {
-    top: 3.9rem;
+  [data-theme="dark"] .tab-row {
+    box-shadow: 0 14px 32px #00000052;
   }
 
   .hero-content.experience-mode {

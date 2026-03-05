@@ -97,6 +97,7 @@ const iconSrc = {
 const resolvedProfileImage = PROFILE_IMAGE ? withBasePath(PROFILE_IMAGE) : "";
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabKey | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
@@ -577,6 +578,7 @@ export default function Home() {
 
   const openTab = (tabKey: TabKey) => {
     setActiveTab((current) => (current === tabKey ? null : tabKey));
+    setMobileMenuOpen(false);
     window.requestAnimationFrame(() => {
       heroRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -611,7 +613,30 @@ export default function Home() {
       </button>
 
       <section className={`tab-zone ${activeTab ? "has-selection" : ""}`}>
-        <div className="tab-row" role="tablist" aria-label="Profile Sections">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="profile-tab-list"
+          aria-label="Toggle sections menu"
+          onClick={() => setMobileMenuOpen((current) => !current)}
+        >
+          <span aria-hidden="true">{mobileMenuOpen ? "✕" : "☰"}</span>
+          <span>Menu</span>
+        </button>
+        <button
+          type="button"
+          className={`mobile-menu-backdrop ${mobileMenuOpen ? "mobile-open" : ""}`}
+          aria-hidden={!mobileMenuOpen}
+          tabIndex={mobileMenuOpen ? 0 : -1}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <div
+          id="profile-tab-list"
+          className={`tab-row ${mobileMenuOpen ? "mobile-open" : ""}`}
+          role="tablist"
+          aria-label="Profile Sections"
+        >
           {tabs.map((tab) => (
             <button
               key={tab.key}
