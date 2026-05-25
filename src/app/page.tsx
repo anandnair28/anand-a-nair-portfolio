@@ -1,18 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type TabKey =
-  | "about"
-  | "education"
-  | "experience"
-  | "projects"
-  | "skills"
-  | "contact"
-  | "fun";
-
-const PROFILE_IMAGE = "dp/anand-a-nair-dp.jpeg"; // Set to your image path from /public, e.g. "/anand.jpg"
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const withBasePath = (path: string) => {
@@ -22,66 +12,241 @@ const withBasePath = (path: string) => {
   return `${BASE_PATH}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
-const tabs: { key: TabKey; label: string }[] = [
-  { key: "about", label: "About Me" },
+const PROFILE_IMAGE = withBasePath("dp/anand-a-nair-dp.jpeg");
+
+type NavKey = "about" | "education" | "experience" | "skills" | "contact";
+
+const navLinks: { key: NavKey; label: string }[] = [
+  { key: "about", label: "About" },
   { key: "education", label: "Education" },
   { key: "experience", label: "Experience" },
-  { key: "projects", label: "Projects" },
   { key: "skills", label: "Skills" },
-  { key: "contact", label: "Contact Me" },
-  { key: "fun", label: "Fun" },
+  { key: "contact", label: "Contact" },
 ];
 
-const skills = {
-  Languages: ["Python", "Java", "JavaScript", "TypeScript", "SQL"],
-  "Frameworks & Tools": [
-    "Flask",
-    "FastAPI",
-    "Streamlit",
-    "LangChain",
-    "Angular",
-    "Spring Boot",
-    "REST APIs",
-    "Node.js",
-  ],
-  "Data & ML": [
-    "Large Language Models (LLMs)",
-    "Retrieval-Augmented Generation (RAG)",
-    "Agentic AI",
-    "Vector Databases",
-    "Vector Embeddings",
-    "Semantic Search",
-    "Machine Learning",
-    "scikit-learn",
-    "MLflow",
-    "Random Forest",
-    "XGBoost",
-    "Model Training & Evaluation",
-    "Hyperparameter Tuning (GridSearchCV)",
-  ],
-  Data: [
-    "Snowflake",
-    "Oracle SQL",
-    "PL/SQL",
-    "Microsoft SQL Server (MSSQL)",
-    "Amazon S3",
-    "Polars",
-  ],
-  "DevOps & Monitoring": [
-    "CI/CD",
-    "Performance Optimisation",
-    "Load Testing",
-    "Docker",
-    "GitLab CI/CD",
-    "SonarQube",
-  ],
-  "Finance & Quant": [
-    "Algorithmic Trading",
-    "Backtesting",
-    "Quantitative Analysis",
-  ],
-  Others: ["Git", "GitHub", "GitLab", "Microsoft Excel", "UI/UX Design"],
-};
+interface MetricCard {
+  icon: string;
+  label: string;
+  figure: string;
+  stat: string;
+}
+
+interface ArchItem {
+  title: string;
+  detail: string;
+}
+
+interface ExperienceEntry {
+  title: string;
+  subtitle: string;
+  period: string;
+  summary: string;
+  metrics: MetricCard[];
+  architecture: ArchItem[];
+}
+
+const experiences: ExperienceEntry[] = [
+  {
+    title: "BNY — Senior Associate, Full Stack Developer",
+    subtitle: "Markets Execution Services | Chennai, India",
+    period: "Mar 2024 - Present",
+    summary:
+      "Owned high-scale metrics computation, Python platform modernisation, and production AI/ML products supporting macro strategy insights and FX execution workflows.",
+    metrics: [
+      {
+        icon: "🚀",
+        label: "Metric Highlight",
+        figure: "12.5M RECORDS / RUN",
+        stat: "Refactored Pandas → Polars\nRuntime: 4 Hours → 1.5 Hours\n(1 Core instead of 4)",
+      },
+      {
+        icon: "⚡",
+        label: "CI/CD Impact",
+        figure: "Failures: 50% → ~0%",
+        stat: "Build Time: 20m → 4m",
+      },
+    ],
+    architecture: [
+      {
+        title: "Data Pipeline Modernization",
+        detail:
+          "Migrated core computing layers to Polars, slashing runtimes across equity and fixed income holdings computations processing ~12.5M records/run.",
+      },
+      {
+        title: "Infrastructure & System Maintainability",
+        detail:
+          "Led Python 3.13 migration across 12 services and built reusable Docker base images, cutting container build time from ~20m to ~4m.",
+      },
+      {
+        title: "AI Integration & LLM Orchestration",
+        detail:
+          "Deployed automated market communications tool publishing 3 session-aligned summaries/day to 100+ internal recipients.",
+      },
+      {
+        title: "FX Forecasting & ML Models",
+        detail:
+          "Built FX forecasting models trained on >1B tick datapoints, backtested across 21 currency pairs with ~$1M simulated PnL over 9 months.",
+      },
+      {
+        title: "Technical Leadership",
+        detail:
+          "Led 4-developer virtual pod across sprint planning, Jira execution, and model governance controls with 2 business owners.",
+      },
+    ],
+  },
+  {
+    title: "BNY — Associate, Full Stack Developer",
+    subtitle: "iFlow, Markets & Macro Strategy Analytics | Chennai, India",
+    period: "Jul 2022 - Feb 2024",
+    summary:
+      "Delivered full-stack features and large-scale data pipelines for a global markets analytics platform, improving deployment speed, data throughput, and engineering quality.",
+    metrics: [
+      {
+        icon: "📊",
+        label: "Data Scale",
+        figure: "1K → 1.5M Records",
+        stat: "Per batch across ~20 pipelines\nMulti-source feeds integrated",
+      },
+      {
+        icon: "🚀",
+        label: "Release Speed",
+        figure: "4 Hours → 20 Minutes",
+        stat: "Production release cycle\n1x/month → 2x/month cadence",
+      },
+    ],
+    architecture: [
+      {
+        title: "ETL & Data Sourcing",
+        detail:
+          "Built Oracle-based workflows integrating REST APIs, CSV/NAS, Denodo, Sybase, Vertica, and MSSQL across FX, equities, and fixed income.",
+      },
+      {
+        title: "CI/CD Standardization",
+        detail:
+          "Designed GitLab CI/CD Docker template deploying 13 services (6 Python, 7 Java) to internal AppEngine.",
+      },
+      {
+        title: "Quality Engineering",
+        detail:
+          "Integrated SonarQube quality gates and lifted unit test coverage to ~80% across Java and Angular (v2+) services.",
+      },
+      {
+        title: "Angular UI Delivery",
+        detail:
+          "Delivered enhancements across analytics screens (Flows, Monitor, Global Heatmap, Saved Charts) with CSV/PNG export support.",
+      },
+    ],
+  },
+  {
+    title: "BNY Mellon — Summer Associate Intern",
+    subtitle: "FX Payments | Chennai, India (Remote)",
+    period: "Jun 2021 - Aug 2021",
+    summary:
+      "Modernised an internal FX rate-sheet admin platform by migrating legacy AngularJS to Angular and strengthening RBAC and test coverage for release readiness.",
+    metrics: [],
+    architecture: [
+      {
+        title: "AngularJS → Angular Migration",
+        detail:
+          "Migrated DFX Admin module (1 screen, 4 tabs) within a 6-week window across 2 Agile sprints.",
+      },
+      {
+        title: "Spring Boot & RBAC",
+        detail:
+          "Implemented REST APIs and enforced role-based authorisation across 4 roles (GAMO, Viewer, Trader, Admin).",
+      },
+      {
+        title: "Test Coverage",
+        detail:
+          "Achieved ~85% coverage across Angular/Karma and Spring Boot unit tests.",
+      },
+    ],
+  },
+  {
+    title: "iDatalytics — Research Trainee",
+    subtitle: "Kochi, India (Winter Internship)",
+    period: "Dec 2019 - Jan 2020",
+    summary:
+      "Prototyped an NLP-driven recruitment screening workflow by extracting and ranking high-signal resume and job-description content.",
+    metrics: [],
+    architecture: [
+      {
+        title: "NLP Prototype",
+        detail:
+          "Built Python NLP pipeline to extract structured fields from resumes and match against job descriptions.",
+      },
+      {
+        title: "TextRank Ranking",
+        detail:
+          "Implemented TextRank-based summarisation to surface top relevance signals from profiles and JDs.",
+      },
+      {
+        title: "UiPath Automation",
+        detail:
+          "Automated outreach-preparation steps, cutting turnaround time for screening inputs and cold-email drafting.",
+      },
+    ],
+  },
+];
+
+const skillCategories = [
+  {
+    label: "Languages",
+    items: ["Python", "TypeScript", "JavaScript", "SQL", "Java"],
+  },
+  {
+    label: "Frameworks & Tools",
+    items: [
+      "FastAPI",
+      "Flask",
+      "Streamlit",
+      "LangChain",
+      "Angular",
+      "Spring Boot",
+      "Node.js",
+    ],
+  },
+  {
+    label: "Data & ML",
+    items: [
+      "LLMs / RAG",
+      "Agentic AI",
+      "Vector Databases",
+      "Machine Learning",
+      "scikit-learn",
+      "MLflow",
+      "XGBoost",
+    ],
+  },
+  {
+    label: "Data Platforms",
+    items: [
+      "Snowflake",
+      "Polars",
+      "Oracle SQL",
+      "Amazon S3",
+      "Microsoft SQL Server",
+    ],
+  },
+  {
+    label: "DevOps & Infrastructure",
+    items: [
+      "Docker",
+      "CI/CD Pipelines",
+      "GitLab CI/CD",
+      "SonarQube",
+      "Performance Optimisation",
+    ],
+  },
+  {
+    label: "Finance & Quant",
+    items: [
+      "Algorithmic Trading",
+      "Backtesting Frameworks",
+      "Quantitative Analysis",
+    ],
+  },
+];
 
 const iconSrc = {
   sun: withBasePath("/icons/sun.svg"),
@@ -94,27 +259,94 @@ const iconSrc = {
   graduation: withBasePath("/icons/graduation-cap.svg"),
 } as const;
 
-const resolvedProfileImage = PROFILE_IMAGE ? withBasePath(PROFILE_IMAGE) : "";
+const contactItems = [
+  {
+    key: "phone-1",
+    iconKey: "phone" as const,
+    label: "Phone",
+    value: "+91 8547 966 900",
+    href: "tel:+918547966900",
+    action: "copy" as const,
+  },
+  {
+    key: "phone-2",
+    iconKey: "phone" as const,
+    label: "Alternate Phone",
+    value: "+91 6238 985 451",
+    href: "tel:+916238985451",
+    action: "copy" as const,
+  },
+  {
+    key: "mail",
+    iconKey: "mail" as const,
+    label: "Email",
+    value: "nair.anand2000@gmail.com",
+    href: "mailto:nair.anand2000@gmail.com",
+    action: "copy" as const,
+  },
+  {
+    key: "linkedin",
+    iconKey: "linkedin" as const,
+    label: "LinkedIn",
+    value: "linkedin.com/in/anandnair28",
+    href: "https://linkedin.com/in/anandnair28",
+    action: "visit" as const,
+  },
+  {
+    key: "github",
+    iconKey: "github" as const,
+    label: "GitHub",
+    value: "github.com/anand-a-nair",
+    href: "https://github.com/anand-a-nair",
+    action: "visit" as const,
+  },
+  {
+    key: "leetcode",
+    iconKey: "leetcode" as const,
+    label: "LeetCode",
+    value: "leetcode.com/u/5C6mtMabPB",
+    href: "https://leetcode.com/u/5C6mtMabPB",
+    action: "visit" as const,
+  },
+];
+
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<TabKey | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("hero");
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const heroRef = useRef<HTMLElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setTheme(savedTheme);
-      return;
-    }
-    setTheme("light");
+    const saved = window.localStorage.getItem("portfolio-theme");
+    if (saved === "light" || saved === "dark") setTheme(saved);
   }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: "-35% 0px -35% 0px" }
+    );
+
+    const sections = document.querySelectorAll("section[id]");
+    sections.forEach((s) => observerRef.current?.observe(s));
+
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setMobileMenuOpen(false);
+  };
 
   const copyText = async (key: string, value: string) => {
     try {
@@ -126,569 +358,282 @@ export default function Home() {
     }
   };
 
-  const section = useMemo(() => {
-    if (!activeTab) {
-      return null;
-    }
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-    if (activeTab === "about") {
-      return {
-        title: "About Me",
-        body: (
-          <article className="info-card">
-            <h3>Professional Summary</h3>
+  return (
+    <div className="page-root">
+      {/* ── Navbar ── */}
+      <nav className="navbar">
+        <button className="nav-brand" onClick={() => scrollTo("hero")}>
+          ANAND.
+        </button>
+        <div className="nav-links">
+          {navLinks.map((link) => (
+            <button
+              key={link.key}
+              className={`nav-link ${activeSection === link.key ? "active" : ""}`}
+              onClick={() => scrollTo(link.key)}
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+        <div className="nav-right">
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            <Image
+              src={theme === "light" ? iconSrc.moon : iconSrc.sun}
+              alt=""
+              width={18}
+              height={18}
+            />
+          </button>
+          <button
+            className="mobile-hamburger"
+            onClick={() => setMobileMenuOpen((v) => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? "✕" : "☰"}
+          </button>
+        </div>
+      </nav>
+
+      {/* ── Mobile Nav ── */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav">
+          {navLinks.map((link) => (
+            <button
+              key={link.key}
+              className={`mobile-nav-link ${activeSection === link.key ? "active" : ""}`}
+              onClick={() => scrollTo(link.key)}
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* ── Hero ── */}
+      <section id="hero" className="hero-section">
+        <div className="hero-grid">
+          <div className="hero-text">
+            <p className="hero-greeting">👋 Hey! I am</p>
+            <h1 className="hero-name">ANAND NAIR</h1>
+            <p className="hero-tagline">
+              Building High-Performance AI Products
+              <br />
+              &amp; Large-Scale Data Pipelines.
+            </p>
+            <p className="hero-desc">
+              Full-stack architecture optimized for measurable business outcomes.
+            </p>
+            <div className="hero-ctas">
+              <button className="cta-primary" onClick={() => scrollTo("experience")}>
+                View Experience ↓
+              </button>
+              <button className="cta-secondary" onClick={() => scrollTo("contact")}>
+                Contact Me
+              </button>
+            </div>
+          </div>
+          <div className="hero-image-wrap">
+            <div className="profile-ring">
+              {PROFILE_IMAGE ? (
+                <Image
+                  src={PROFILE_IMAGE}
+                  alt="Anand Nair"
+                  className="profile-img"
+                  fill
+                  sizes="(max-width: 720px) 230px, 310px"
+                  priority
+                />
+              ) : (
+                <span className="profile-initials">AN</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── About ── */}
+      <section id="about" className="page-section">
+        <div className="section-inner">
+          <h2 className="section-title">About Me</h2>
+          <div className="neu-card about-card">
             <p>
               Data-driven full-stack developer building analytics platforms and
               ML-backed products in global markets. Experienced in high-scale
-              data processing, CI/CD and cloud-native services, with hands-on
+              data processing, CI/CD, and cloud-native services, with hands-on
               work in LLM applications and model governance.
             </p>
             <p>
               Known for improving performance, reliability, and delivery speed
-              with measurable outcomes.
+              with measurable outcomes. I thrive at the intersection of
+              engineering rigour and product thinking.
             </p>
-          </article>
-        ),
-      };
-    }
+          </div>
+        </div>
+      </section>
 
-    if (activeTab === "education") {
-      return {
-        title: "Education",
-        body: (
-          <article className="info-card">
-            <h3 className="title-with-icon">
-              <span className="inline-icon" aria-hidden="true">
-                <Image src={iconSrc.graduation} alt="" width={18} height={18} />
-              </span>
-              NIT Tiruchirappalli
-            </h3>
-            <p className="meta-line">2018 - 2022 | CGPA: 8.22</p>
-            <p>
-              Bachelor of Technology in Computer Science and Engineering
-              (Minor: Economics)
-            </p>
-          </article>
-        ),
-      };
-    }
-
-    if (activeTab === "experience") {
-      return {
-        title: "Experience",
-        className: "experience-mode",
-        body: (
-          <div className="experience-shell">
-            <div className="experience-scroll">
-              <div className="timeline single-column">
-              <article className="info-card">
-                <h3>BNY - Senior Associate, Full Stack Developer</h3>
-                <p className="meta-line">
-                  Markets Execution Services | Mar 2024 - Present | Chennai, TN,
-                  India
-                </p>
-                <p>
-                  Owned high-scale metrics computation, Python platform
-                  modernisation, and production AI/ML products supporting macro
-                  strategy insights and FX execution workflows.
-                </p>
-                <ul className="point-list">
-                  <li>
-                    Optimised equity and fixed income holdings computations
-                    processing ~12.5M records/run by refactoring pipelines from
-                    Pandas-style processing to Polars, cutting runtime from ~4
-                    hours (4 cores) to ~1.5 hours (1 core).
-                  </li>
-                  <li>
-                    Led migration of 12 Python services from Python 3.9 to
-                    Python 3.13, aligning with deprecation and vulnerability
-                    requirements while improving release readiness and
-                    maintainability.
-                  </li>
-                  <li>
-                    Designed a reusable Docker base image for Python services,
-                    reducing container build time from ~20 minutes to ~4
-                    minutes and standardising runtime dependencies across
-                    services.
-                  </li>
-                  <li>
-                    Strengthened CI/CD with unit testing and SonarQube quality
-                    gates for Python services, reducing QA-region deployment
-                    issues from ~50% of deployments to near zero.
-                  </li>
-                  <li>
-                    Delivered LLM-based market communications automation,
-                    publishing 3 session-aligned summaries/day (APAC/EMEA/US)
-                    and generating a configurable macro digest from ~10-15
-                    items/day to 100+ internal recipients.
-                  </li>
-                  <li>
-                    Enhanced Flowriter with URL ingestion and configurable
-                    writing tools (Polisher, Highlighter) and contributed to
-                    modernising the application from Streamlit towards an
-                    Angular architecture for scalability.
-                  </li>
-                  <li>
-                    Built and productionised FX forecasting models for Digital
-                    Trader (EOD balances and intraday spread by desk), training
-                    on &gt;1B tick datapoints and ~1M trades/5 years;
-                    backtested 21 currency pairs with ~$1M simulated PnL over 9
-                    months.
-                  </li>
-                  <li>
-                    Acted as technical lead for a 4-developer virtual pod,
-                    running sprint planning and Jira execution, aligning with 2
-                    business owners/traders, and enforcing model governance
-                    controls (regression suites, versioning, deployment
-                    readiness).
-                  </li>
-                  <li>
-                    Co-owned Markets Data Platform design to centralise datasets
-                    in Snowflake, targeting consolidation of 4 applications and
-                    ingestion from ~30 source systems into a governed, reusable
-                    datastore.
-                  </li>
-                </ul>
-              </article>
-
-              <article className="info-card">
-                <h3>BNY - Associate, Full Stack Developer</h3>
-                <p className="meta-line">
-                  iFlow, Markets &amp; Macro Strategy Analytics | Jul 2022 - Feb
-                  2024 | Chennai, TN, India
-                </p>
-                <p>
-                  Delivered full-stack features and large-scale data pipelines
-                  for a global markets analytics platform, improving deployment
-                  speed, data throughput, and engineering quality across
-                  multi-service architecture.
-                </p>
-                <ul className="point-list">
-                  <li>
-                    Built scalable ETL and data-sourcing workflows on Oracle,
-                    delivering ~20 pipelines and scaling ingestion from ~1,000
-                    to ~1.5M records per batch across metric computation jobs.
-                  </li>
-                  <li>
-                    Integrated multi-source data feeds (REST APIs, CSV/NAS,
-                    Denodo, Sybase, Vertica, Microsoft SQL Server) to support
-                    cross-asset analytics across FX, equities, and fixed income.
-                  </li>
-                  <li>
-                    Designed a standardised GitLab CI/CD template using Docker
-                    to deploy 13 services (6 Python, 7 Java) to internal
-                    AppEngine, cutting production releases from ~4 hours to ~20
-                    minutes.
-                  </li>
-                  <li>
-                    Eliminated deployment-side failures (2 services failing per
-                    release to 0) by codifying configuration handling and
-                    release readiness checks within CI/CD pipelines.
-                  </li>
-                  <li>
-                    Improved release cadence from 1x/month to 2x/month and
-                    enabled on-demand releases via RFC, increasing delivery
-                    responsiveness to strategist and client needs.
-                  </li>
-                  <li>
-                    Automated QA-region deployments from ~30 minutes manual
-                    effort to 1-click pipelines completing in ~2 minutes,
-                    improving environment consistency and developer throughput.
-                  </li>
-                  <li>
-                    Integrated SonarQube quality gates and unit testing to lift
-                    coverage to ~80% across Java services and Angular (v2+)
-                    front end.
-                  </li>
-                  <li>
-                    Delivered Angular UI enhancements across key analytics
-                    screens (Flows, Monitor, Global Heatmap, Saved Charts) and
-                    enabled CSV/PNG chart exports.
-                  </li>
-                  <li>
-                    Owned and stabilised 6 production Python metric services
-                    post-transition, leading incident response and recomputation
-                    procedures and partnering with analytics teams to improve
-                    delivery discipline.
-                  </li>
-                </ul>
-              </article>
-
-              <article className="info-card">
-                <h3>BNY Mellon - Summer Associate Intern (FX Payments)</h3>
-                <p className="meta-line">
-                  Jun 2021 - Aug 2021 | Chennai, TN, India (Remote)
-                </p>
-                <p>
-                  Modernised an internal FX rate-sheet admin platform by
-                  migrating legacy AngularJS functionality to Angular and
-                  strengthening RBAC and test coverage for release readiness.
-                </p>
-                <ul className="point-list">
-                  <li>
-                    Migrated a discrete DFX Admin module (1 screen, 4 tabs)
-                    from AngularJS to Angular (v2+) within a 6-week delivery
-                    window across 2 Agile sprints.
-                  </li>
-                  <li>
-                    Implemented Spring Boot backend integration and REST APIs
-                    for migrated flows, improving maintainability by retiring
-                    legacy J2EE-style access-control patterns.
-                  </li>
-                  <li>
-                    Enforced role-based authorisation (RBAC) via the internal
-                    entitlements API across 4 roles (GAMO, Viewer, Trader,
-                    Admin).
-                  </li>
-                  <li>
-                    Built comprehensive unit tests across Angular/Karma and
-                    Spring Boot, achieving ~85% coverage.
-                  </li>
-                  <li>
-                    Supported SQL/DBMS configuration updates required for
-                    rate-sheet generation and delivery-profile behaviour across
-                    channels (SFTP, Email, SWIFT) and formats (XLS, XML, TXT).
-                  </li>
-                  <li>
-                    Collaborated with stakeholders across London and the US to
-                    clarify requirements and deliver within corporate
-                    engineering standards.
-                  </li>
-                </ul>
-              </article>
-
-              <article className="info-card">
-                <h3>iDatalytics - Research Trainee (Winter Internship)</h3>
-                <p className="meta-line">
-                  Dec 2019 - Jan 2020 | Kochi, KL, India
-                </p>
-                <p>
-                  Prototyped an NLP-driven recruitment screening and outreach
-                  workflow by extracting and ranking high-signal resume and
-                  job-description content.
-                </p>
-                <ul className="point-list">
-                  <li>
-                    Built a Python NLP prototype to extract structured fields
-                    (skills, keywords, experience) from resumes and compare
-                    against job descriptions, reducing manual screening effort.
-                  </li>
-                  <li>
-                    Implemented TextRank-based ranking/summarisation to surface
-                    top relevance signals from profiles and JDs, improving match
-                    quality and early-stage review speed.
-                  </li>
-                  <li>
-                    Automated repetitive data handling and outreach-preparation
-                    steps using UiPath, cutting turnaround time for screening
-                    inputs and cold-email drafting workflows.
-                  </li>
-                  <li>
-                    Cleaned and validated datasets by standardising inputs and
-                    correcting noisy entries, improving downstream NLP
-                    evaluation quality.
-                  </li>
-                </ul>
-              </article>
+      {/* ── Education ── */}
+      <section id="education" className="page-section">
+        <div className="section-inner">
+          <h2 className="section-title">Education</h2>
+          <div className="neu-card">
+            <div className="edu-header">
+              <div className="edu-icon-wrap">
+                <Image
+                  src={iconSrc.graduation}
+                  alt=""
+                  width={22}
+                  height={22}
+                />
+              </div>
+              <div>
+                <h3>NIT Tiruchirappalli</h3>
+                <p className="edu-meta">2018 – 2022 | CGPA: 8.22</p>
               </div>
             </div>
-            <div className="scroll-hint" aria-hidden="true">
-              <span className="scroll-pill">
-                Scroll for more
-                <span className="scroll-arrow">↓</span>
-              </span>
-            </div>
+            <p className="edu-degree">
+              B.Tech in Computer Science and Engineering (Minor: Economics)
+            </p>
           </div>
-        ),
-      };
-    }
+        </div>
+      </section>
 
-    if (activeTab === "projects") {
-      return {
-        title: "Projects",
-        body: (
-          <article className="wip-card">
-            <h3>Coming Soon</h3>
-            <p>This section will be updated shortly.</p>
-          </article>
-        ),
-      };
-    }
+      {/* ── Experience ── */}
+      <section id="experience" className="page-section">
+        <div className="section-inner">
+          <h2 className="section-title">Experience</h2>
+          <div className="experience-stack">
+            {experiences.map((exp, idx) => (
+              <div key={idx} className="exp-entry">
+                <div className="exp-header">
+                  <div>
+                    <h3 className="exp-title">{exp.title}</h3>
+                    <p className="exp-subtitle">{exp.subtitle}</p>
+                  </div>
+                  <span className="exp-period">{exp.period}</span>
+                </div>
+                <p className="exp-summary">{exp.summary}</p>
 
-    if (activeTab === "skills") {
-      return {
-        title: "Skills",
-        body: (
-          <div className="skills-table" role="table" aria-label="Skills">
-            {Object.entries(skills).map(([category, items]) => (
-              <section className="skill-row" key={category} role="row">
-                <h3 role="rowheader">{category}</h3>
-                <div className="skill-line" role="cell">
-                  {items.map((item) => (
+                {exp.metrics.length > 0 ? (
+                  <div className="exp-body">
+                    <div className="metrics-col">
+                      {exp.metrics.map((m, mi) => (
+                        <div key={mi} className="metric-card">
+                          <div className="metric-label">
+                            {m.icon} {m.label}
+                          </div>
+                          <div className="metric-figure">{m.figure}</div>
+                          <div className="metric-stat">{m.stat}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="arch-col">
+                      <div className="arch-label">Project Architecture</div>
+                      {exp.architecture.map((a, ai) => (
+                        <div key={ai} className="arch-item">
+                          <span className="arch-bullet">•</span>
+                          <div>
+                            <strong>{a.title}</strong>
+                            <p>{a.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="simple-arch">
+                    {exp.architecture.map((a, ai) => (
+                      <div key={ai} className="arch-item">
+                        <span className="arch-bullet">•</span>
+                        <div>
+                          <strong>{a.title}</strong>
+                          <p>{a.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Skills ── */}
+      <section id="skills" className="page-section">
+        <div className="section-inner">
+          <h2 className="section-title">Technical Expertise</h2>
+          <div className="skills-grid">
+            {skillCategories.map((cat) => (
+              <div key={cat.label} className="neu-card">
+                <h3 className="skill-category">{cat.label}</h3>
+                <div className="skill-pills">
+                  {cat.items.map((item) => (
                     <span key={item} className="skill-pill">
                       {item}
                     </span>
                   ))}
                 </div>
-              </section>
+              </div>
             ))}
           </div>
-        ),
-      };
-    }
-
-    if (activeTab === "contact") {
-      return {
-        title: "Contact Me",
-        body: (
-          <section className="contact-card-clean" aria-label="Contact Details">
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.phone} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>Phone</p>
-                <a href="tel:+918547966900">+91 8547 966 900</a>
-              </div>
-              <button
-                type="button"
-                className="contact-action"
-                onClick={() => copyText("phone-1", "+91 8547 966 900")}
-              >
-                {copiedField === "phone-1" ? "Copied" : "Copy"}
-              </button>
-            </article>
-
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.phone} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>Alternate Phone</p>
-                <a href="tel:+916238985451">+91 6238 985 451</a>
-              </div>
-              <button
-                type="button"
-                className="contact-action"
-                onClick={() => copyText("phone-2", "+91 6238 985 451")}
-              >
-                {copiedField === "phone-2" ? "Copied" : "Copy"}
-              </button>
-            </article>
-
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.mail} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>Mail</p>
-                <a href="mailto:nair.anand2000@gmail.com">nair.anand2000@gmail.com</a>
-              </div>
-              <button
-                type="button"
-                className="contact-action"
-                onClick={() => copyText("mail", "nair.anand2000@gmail.com")}
-              >
-                {copiedField === "mail" ? "Copied" : "Copy"}
-              </button>
-            </article>
-
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.linkedin} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>LinkedIn</p>
-                <a
-                  href="https://linkedin.com/in/anandnair28"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  linkedin.com/in/anandnair28
-                </a>
-              </div>
-              <a
-                className="contact-action link"
-                href="https://linkedin.com/in/anandnair28"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit
-              </a>
-            </article>
-
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.github} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>GitHub</p>
-                <a href="https://github.com/anand-a-nair" target="_blank" rel="noreferrer">
-                  github.com/anand-a-nair
-                </a>
-              </div>
-              <a
-                className="contact-action link"
-                href="https://github.com/anand-a-nair"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit
-              </a>
-            </article>
-
-            <article className="contact-row">
-              <span className="contact-icon-wrap">
-                <Image src={iconSrc.leetcode} alt="" width={14} height={14} />
-              </span>
-              <div className="contact-main">
-                <p>LeetCode</p>
-                <a
-                  href="https://leetcode.com/u/5C6mtMabPB"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  leetcode.com/u/5C6mtMabPB
-                </a>
-              </div>
-              <a
-                className="contact-action link"
-                href="https://leetcode.com/u/5C6mtMabPB"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit
-              </a>
-            </article>
-          </section>
-        ),
-      };
-    }
-
-    return {
-      title: "Fun",
-      body: (
-        <article className="wip-card">
-          <h3>Coming Soon</h3>
-          <p>This section will be updated shortly.</p>
-        </article>
-      ),
-    };
-  }, [activeTab, copiedField]);
-
-  const openTab = (tabKey: TabKey) => {
-    setActiveTab((current) => (current === tabKey ? null : tabKey));
-    setMobileMenuOpen(false);
-    window.requestAnimationFrame(() => {
-      heroRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  };
-
-  const collapseTab = () => {
-    setActiveTab(null);
-    heroRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
-  };
-
-  return (
-    <main className={`portfolio-shell ${activeTab ? "section-open" : ""}`}>
-      <button
-        type="button"
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label="Toggle dark and light mode"
-        role="switch"
-        aria-checked={theme === "dark"}
-      >
-        <span className="theme-icon" aria-hidden="true">
-          <Image src={iconSrc.sun} alt="" width={20} height={20} />
-        </span>
-        <span className="theme-icon" aria-hidden="true">
-          <Image src={iconSrc.moon} alt="" width={20} height={20} />
-        </span>
-        <span className="toggle-thumb" aria-hidden="true" />
-      </button>
-
-      <section className={`tab-zone ${activeTab ? "has-selection" : ""}`}>
-        <button
-          type="button"
-          className="mobile-menu-toggle"
-          aria-expanded={mobileMenuOpen}
-          aria-controls="profile-tab-list"
-          aria-label="Toggle sections menu"
-          onClick={() => setMobileMenuOpen((current) => !current)}
-        >
-          <span aria-hidden="true">{mobileMenuOpen ? "✕" : "☰"}</span>
-          <span>Menu</span>
-        </button>
-        <button
-          type="button"
-          className={`mobile-menu-backdrop ${mobileMenuOpen ? "mobile-open" : ""}`}
-          aria-hidden={!mobileMenuOpen}
-          tabIndex={mobileMenuOpen ? 0 : -1}
-          onClick={() => setMobileMenuOpen(false)}
-        />
-        <div
-          id="profile-tab-list"
-          className={`tab-row ${mobileMenuOpen ? "mobile-open" : ""}`}
-          role="tablist"
-          aria-label="Profile Sections"
-        >
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              role="tab"
-              className={`tab-button ${activeTab === tab.key ? "active" : ""}`}
-              aria-selected={activeTab === tab.key}
-              onClick={() => openTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
         </div>
       </section>
 
-      <section className="hero" ref={heroRef}>
-        {section ? (
-          <article
-            className={`tab-content hero-content ${section.className || ""}`}
-            aria-live="polite"
-          >
-            <header className="content-head">
-              <h2>{section.title}</h2>
-              <button type="button" className="collapse-link" onClick={collapseTab}>
-                Back to Home
-              </button>
-            </header>
-            <div className="content-body">{section.body}</div>
-          </article>
-        ) : (
-          <>
-            <p className="hey-line">Hey!</p>
-            <p className="intro-line">I am Anand</p>
-            <p className="role-line">Full Stack Developer / AI Engineer</p>
-
-            <div className="display-picture" aria-label="Profile Picture">
-              {resolvedProfileImage ? (
-                <Image
-                  src={resolvedProfileImage}
-                  alt="Anand"
-                  className="profile-image"
-                  fill
-                  sizes="(max-width: 768px) 220px, 260px"
-                />
-              ) : (
-                <span>AN</span>
-              )}
-            </div>
-          </>
-        )}
+      {/* ── Contact ── */}
+      <section id="contact" className="page-section">
+        <div className="section-inner">
+          <h2 className="section-title">Contact Me</h2>
+          <div className="contact-grid">
+            {contactItems.map((item) => (
+              <div key={item.key} className="neu-card contact-row">
+                <div className="contact-icon-wrap">
+                  <Image src={iconSrc[item.iconKey]} alt="" width={16} height={16} />
+                </div>
+                <div>
+                  <p className="contact-label">{item.label}</p>
+                  <a
+                    className="contact-value"
+                    href={item.href}
+                    target={item.action === "visit" ? "_blank" : undefined}
+                    rel={item.action === "visit" ? "noreferrer" : undefined}
+                  >
+                    {item.value}
+                  </a>
+                </div>
+                {item.action === "copy" ? (
+                  <button
+                    className="contact-action"
+                    onClick={() => copyText(item.key, item.value)}
+                  >
+                    {copiedField === item.key ? "Copied!" : "Copy"}
+                  </button>
+                ) : (
+                  <a
+                    className="contact-action"
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Visit →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-    </main>
+      <footer className="page-footer">
+        <p>Anand A Nair © {new Date().getFullYear()}</p>
+      </footer>
+    </div>
   );
 }
